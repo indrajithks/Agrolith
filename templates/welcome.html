@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Welcome </title>
     <style> 
-    body { background: linear-gradient(135deg, #dbeafe, #0625ac);
+    body { background: linear-gradient(to right, #91cec3, #28315b);
            margin: 0;
            padding: 0;
            font-family: Arial, Helvetica, sans-serif;
@@ -15,60 +15,163 @@
            align-items: center;
         }
 
-    .container {
-        background: rgb(206, 162, 162);
-        padding: 50px 70px;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    .welcome-box {
+        background-color: rgba(245, 190, 190, 0.9);
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
         text-align: center;
-        max-width: 500px;
+        width: 550px;
     }
 
-    .box {
-        background-color: white;
-        padding: 40px 60px;
-        border-radius: 20px;
-        box-shadow: 0 40px 20px rgba(0,0,0,0.15);
-        text-align: center;
+    .welcome-box h1 {
+        margin-bottom: 1.5rem;
     } 
 
-    h1 {
-        font-size: 28px;
-        margin-bottom: 20px;
-        color: #111827;
+    button {
+        padding: 0.5rem 1rem;
+        margin: 0.5rem;
+        border: none;
+        border-radius: 5px;
+        background-color: #3498db;
+        color: white;
+        cursor: pointer;
     }
 
-    .btn-group {
+    button:hover {
+        background-color: #2980b9;
+    }
+
+    .form-box {
+        display: none;
+        margin-top: 1rem;
+        text-align: center;
+    }
+
+    input {
+        width: 100%;
+        padding: 0.4rem;
+        margin: 0.5rem 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .submit-btn {
+        background-color: #2ecc71;
+    }
+
+    .submit-btn:hover {
+        background-color: #2ecc71;
+    }
+
+    .button-row {
         display: flex;
         justify-content: center;
-        gap: 20px;
+        align-items: center;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 300px;
+        gap: 15px;
     }
 
-    .btn {
-        text-decoration: none;
-        color: white;
-        background-color: #3b82f6;
-        padding: 10px 20px;
-        border-radius: 8px;
-        font-size: 16px;
-        transition: background-color 0.3s ease;
-        transform: 0.2s;
+    .logout-msg {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #d4edda;
+        color: #000000;
+        padding: 12px 20px;
+        border: 1px solid #c3e6cb;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        animation: fadeOut 3s ease-in-out forwards;
+        opacity: 1;
+        border-radius: 6px;
         font-weight: bold;
+        text-align: center;
+        margin: 10px;
     }
 
-    .btn:hover {
-        background-color: #2563eb;
-        transform: scale(1.05);
+    @keyframes fadeOut {
+        0% { opacity: 1;}
+        80% { opacity: 1;}
+        100% { opacity: 0; display: none; }
+    }
+
+    .error {
+        color: red;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
     }
     </style>
 </head>
 <body>
- <div class="container">
-    <h1> Welcome to the chat-world </h1>
-    <div class="btn-group">
-    <a href="/login/" class="btn"> Login </a>
-    <a href="/signup/" class="btn"> Sign up</a>
+{% if messages %}
+    <div class="logout-msg">
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}    
     </div>
- </div>   
+    {% endif %}
+ <div class="welcome-box">
+    <h1> Welcome to Chilli Jasmine </h1>
+    <div class="button-row">
+    <button onclick="showForm('login')"> Login </button>
+    <button onclick="showForm('signup')"> signup </button>
+    </div>
+
+    <div id="loginForm" class="form-box"> 
+        {% if login_error %}
+        <p class="error"> {{ login_error }} </p>
+        {% endif %}
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            <label> Username </label>
+            <input type="text" name="username" required>
+            <label> Password </label>
+            <input type="password" name="password" required>
+            <button type="submit" class="submit-btn"> Login </button>
+        </form>
+    </div>
+
+    <div id="signupForm" class="form-box">
+        {% if signup_error %}
+        <p class="error"> {{ signup_error }} </p>
+        {% endif %}
+        <form method="POST" action="{% url 'signup' %}">
+            {% csrf_token %}
+            <label> Username </label>
+            <input type="text" name="username" required>
+            <label> Email </label>
+            <input type="email" name="email" required>
+            <label> Password </label>
+            <input type="password" name="password1" required>
+            <label> Confirm Password </label>
+            <input type="password" name="password2" required>
+            <button type="submit" class="submit-btn"> Sign up </button>
+        </form>
+    </div>
+ </div>
+ 
+ <script>
+    function showForm(formType) {
+        document.getElementById("loginForm").style.display = formType === 'login' ?
+        'block' : 'none';
+
+        document.getElementById('signupForm').style.display = formType === 'signup' ?
+        'block' : 'none';
+
+        var defaultForm = "{% if signup_error %}signup{% elif login_error %}login{% endif %}";
+        if (defaultForm) {
+            showForm(defaultForm);
+        }
+    }
+
+    setTimeout(() => {
+        const msg = document.querySelector('.logout-msg');
+        if (msg) msg.remove();
+    }, 3500);
+ </script>
 </body>
 </html>

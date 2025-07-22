@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 
 
 def welcome_view(request):
@@ -19,7 +21,7 @@ def login_view(request):
             login(request, user)
             return redirect('dashboard')
         else:
-            return HttpResponse("Invalid credientials")
+            return render(request, 'welcome.html', {'login_error': 'Invalid credentials'})
         
     return render(request, 'login.html')
 
@@ -30,21 +32,20 @@ def signup_view(request):
         password = request.POST.get('password1')
 
         if User.objects.filter(username=username).exists():
-            return HttpResponse("Username already exists!")
+            return render(request, 'welcome.html', {'signup_error': 'Username already exists.'})
         
         user = User.objects.create_user(username=username, email=email, password=password)
         user.save()
+        login(request, user)
 
-        print("created user:", user.username)
-        print("Password hash", user.password)
+        return redirect('dashboard')
 
-        return redirect('login')
-
-    return render(request, 'signup.html')
+    return redirect('home')
 
 def dashboard_view(request):
     return render(request, 'dashboard.html')
 
 def logout_view(request):
     logout(request)
-    return redirect('login')
+    messages.success(request, "You have been logged out.")
+    return redirect('home')

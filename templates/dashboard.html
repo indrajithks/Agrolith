@@ -7,9 +7,9 @@
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
-            background: #401e1e;
+            background:#f4f4f4;
             margin: 0;
-            padding: 2rem;
+            padding: 0;
         }
 
         .container {
@@ -48,24 +48,79 @@
             margin: 2rem auto 0;
             display: block;
             color: #fff;
-            background-color: #d9534f;
+            background-color: transparent;
             padding: 0.6rem 1.2rem;
-            border-radius: 6px;
+            border: none;
             text-decoration: none;
             font-weight: bold;
             width: fit-content;
         }
 
         .logout:hover {
-            background-color: #c9302c;
+            background-color: #ff6347
+        }
+
+        .navbar {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            background-color: #2e8b57;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 30px;
+            align-items: center;
+            font-family: 'Segoe UI', sans-serif;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar-links {
+            list-style: none;
+            display: flex;
+            gap: 25px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar-links li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-links li a:hover {
+            color: #ffd700;
+        }
+
+        .content {
+            padding: 30px;
+            font-family: 'Segoe UI', sans-serif;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1> Welcome to Agrolith, {{ user.username }} </h1>
-        <p> You logged in </p>
-        <a href="{% url 'logout' %}" class="logout"> Logout </a>
+    <nav class="navbar">
+        <div class="navbar-brand"> AgroLith </div>
+        <ul class="navbar-links">
+            <li><a href="{% url 'dashboard' %}"> Dashboard </a></li>
+            <li><a href="#"> lllll </a></li>
+            <li><a href="#"> qqqqq </a></li>
+            <li><a href="#"> wwwww </a></li>
+            <li><a href="{% url 'logout' %}" class="logout"> Logout </a></li>
+        </ul>
+    </nav>
+
+    <div class="content">
+        <h2> Welcome, {{ user.username }} </h2>
+        <p> You are logged in to AgroLith </p>
     </div>
 </body>
 </html>
