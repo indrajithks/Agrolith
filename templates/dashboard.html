@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
-            background:#f4f4f4;
+            background:#dccece;
             margin: 0;
             padding: 0;
         }
@@ -45,19 +45,20 @@
         }
 
         .logout {
-            margin: 2rem auto 0;
-            display: block;
+            display: inline-block;
             color: #fff;
             background-color: transparent;
-            padding: 0.6rem 1.2rem;
-            border: none;
+            border-radius: 5px;
+            padding: 2px 5px;
             text-decoration: none;
             font-weight: bold;
             width: fit-content;
+            background-color: rgb(174, 105, 105);
         }
 
         .logout:hover {
-            background-color: #ff6347
+            background-color: #994637;
+            border-radius: 5px;
         }
 
         .navbar {
@@ -65,15 +66,21 @@
             width: 100%;
             top: 0;
             left: 0;
-            z-index: 1000;
-            background-color: #2e8b57;
+            z-index: 999;
+            background-color: #132e32;
             color: white;
             display: flex;
             justify-content: space-between;
-            padding: 15px 30px;
+            padding: 10px 20px;
             align-items: center;
             font-family: 'Segoe UI', sans-serif;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            box-shadow: none;    
+        }
+
+        .navbar:hover {
+            background-color: #2e8b57;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2) !important;
         }
 
         .navbar-brand {
@@ -84,8 +91,10 @@
         .navbar-links {
             list-style: none;
             display: flex;
-            gap: 25px;
+            justify-content: center;
+            gap: 20px;
             margin: 0;
+            margin-right: 40px;
             padding: 0;
         }
 
@@ -101,22 +110,115 @@
         }
 
         .content {
-            padding: 30px;
             font-family: 'Segoe UI', sans-serif;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+        }
+
+        .add-cart {
+            background-color: #ffa500;
+            color: white;
+            padding: 2px 9px;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .add-cart:hover {
+            background-color: #e69500;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .veg-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .veg-img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .veg-name {
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .quantity-selector {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .qty-btn {
+            padding: 5px 10px;
+            margin: 0 5px;
+            font-size: 16px;
+            background: #2e8b57;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .qty-count {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .add-cart-btn {
+            padding: 8px 15px;
+            background: #ffc107;
+            color: #000;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
+    <div style="height: 200vh;"></div>
     <nav class="navbar">
         <div class="navbar-brand"> AgroLith </div>
         <ul class="navbar-links">
-            <li><a href="{% url 'dashboard' %}"> Dashboard </a></li>
-            <li><a href="#"> lllll </a></li>
-            <li><a href="#"> qqqqq </a></li>
-            <li><a href="#"> wwwww </a></li>
+            <li><a href="{% url 'dashboard' %}"> Crop & Climate </a></li>
+            <li><a href="#"> Manuers </a></li>
+            <li><a href="#"> Fertilizers </a></li>
+            <li><a href="#"> Plants & Disease </a></li>
+            <li><a href="#" class="add-cart"> Cart </a></li>
             <li><a href="{% url 'logout' %}" class="logout"> Logout </a></li>
         </ul>
     </nav>
+
+    <div class="cards-grid">
+        <div class="veg-card">
+            <img src="" alt="green-long-payar" class="veg-img">
+            <h3 class="veg-name"> green-long-payar </h3>
+
+            <div class="quantity-selector">
+                <button class="qty-btn"> - </button>
+                <span class="qty-count"> 1 </span>
+                <button class="qty-btn"> + </button>
+            </div>
+
+            <button class="add-cart-btn"> Add to cart </button>
+        </div>
+    </div>
 
     <div class="content">
         <h2> Welcome, {{ user.username }} </h2>
