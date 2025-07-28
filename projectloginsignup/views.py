@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
+from .models import Vegetable
 
 
 def welcome_view(request):
@@ -49,3 +50,7 @@ def logout_view(request):
     logout(request)
     messages.success(request, "You have been logged out.")
     return redirect('home')
+
+def dashboard_view(request):
+    vegetables = Vegetable.objects.all()
+    return render(request, 'dashboard.html', {'vegetables': vegetables})

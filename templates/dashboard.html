@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Dashboard </title>
+    <title> AgroLith Dashboard </title>
     <style>
         body {
             padding-top: 80px;
@@ -46,15 +46,9 @@
         }
 
         .logout {
-            display: inline-block;
-            color: #fff;
-            background-color: transparent;
-            border-radius: 5px;
-            padding: 1px 1px;
-            text-decoration: none;
-            font-weight: bold;
-            width: fit-content;
-            background-color: rgb(174, 105, 105);
+            background-color: #e17070;
+            color: white;
+            transition: background-color 0.2s ease-in-out;
         }
 
         .logout:hover {
@@ -121,17 +115,24 @@
             z-index: 9999;
         }
 
+        .add-cart, .logout {
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 14px;
+            line-height: 1;
+            display: inline-block;
+            text-align: center;
+        }
+
         .add-cart {
-            background-color: #ffa500;
-            color: white;
-            padding: 2px 9px;
-            border-radius: 4px;
-            font-weight: 500;
+            background-color: #ffc107;
+            color: black;
             transition: background-color 0.2s ease-in-out;
         }
 
         .add-cart:hover {
-            background-color: #e69500;
+            background-color: #e0ae00;
         }
 
         .cards-grid {
@@ -139,6 +140,8 @@
             grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .veg-card {
@@ -194,13 +197,11 @@
         }
 
         .page-content {
-            padding-top: 70px;
-            margin-top: -1300px;
+            padding-top: 80px;
         }
     </style>
 </head>
 <body>
-    <div style="height: 200vh;"></div>
     <nav class="navbar">
         <div class="navbar-brand"> AgroLith </div>
         <ul class="navbar-links">
@@ -215,9 +216,11 @@
 
     <div class="page-content">
         <div class="cards-grid">
+            {% for veg in vegetables %}
             <div class="veg-card">
-                <img src="" alt="green-long-payar" class="veg-img">
-                <h3 class="veg-name"> green-long-payar </h3>
+                <img src="{{ veg.image.url }}" alt="{{ veg.name }}" class="veg-img">
+                <h3 class="veg-name"> {{ veg.name }} </h3>
+                <p class="price"> ${{ veg.price }} </p>
 
                 <div class="quantity-selector">
                     <button class="qty-btn"> - </button>
@@ -227,9 +230,23 @@
 
                 <button class="add-cart-btn"> Add to cart </button>
             </div>
+            {% endfor %}
         </div>
     </div>
 
-
+<script>
+    document.querySelectorAll('.qty-btn').forEach(btn => {
+        btn.addEventListener('click',function () {
+            const span = this.parentElement.querySelector('.qty-count');
+            let count = parseInt(span.textContent);
+            if (this.textContent.trim() === '+') {
+                span.textContent = count + 1;
+            } 
+            else if (count > 1) {
+                span.textContent = count - 1;
+            }
+        });
+    });
+</script>
 </body>
 </html>
