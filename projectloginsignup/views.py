@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from .models import Vegetable
+from .models import Vegetable,UserProfile
 
 
 def welcome_view(request):
@@ -24,7 +24,7 @@ def login_view(request):
         else:
             return render(request, 'welcome.html', {'login_error': 'Invalid credentials'})
         
-    return render(request, 'login.html')
+    return render(request, 'welcome.html')
 
 def signup_view(request):
     if request.method == 'POST':
@@ -53,4 +53,16 @@ def logout_view(request):
 
 def dashboard_view(request):
     vegetables = Vegetable.objects.all()
-    return render(request, 'dashboard.html', {'vegetables': vegetables})
+
+    if request.user.is_authenticated:
+        profile, created = UserProfile.objects.get_or_create(user=request.user)
+
+        if request.method == "POST":
+            profile.phone_number = request.POST.get("phone")
+            profile.address = request.POST.get("address")
+            profile.save()
+
+        return render(request, 'dashboard.html', {'vegetables': vegetables, 'profile': profile})
+    else:
+        return redirect('login')
+

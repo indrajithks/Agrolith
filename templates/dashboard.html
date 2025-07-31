@@ -141,6 +141,7 @@
             gap: 20px;
             padding: 20px;
             max-width: 1200px;
+            width: 100%;
             margin: 0 auto;
         }
 
@@ -197,7 +198,58 @@
         }
 
         .page-content {
-            padding-top: 80px;
+            padding-top: 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .dashboard-banner {
+            background: #f0fff4;
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 2px solid #d4e9db;
+            font-family: sans-serif;
+            margin-top: 60px;
+        }
+
+        .dashboard-banner h1 {
+            font-size: 26px;
+            color: #2e8b57;
+            margin: 0 0 10px;
+        }
+
+        .dashboard-banner p {
+            font-size: 16px;
+            color: #555;
+            margin: 0;
+        }
+
+        .profile-dropdown {
+            position: relative;
+        }
+
+        .profile-details {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            color: black;
+            padding: 15px;
+            width: 250px;
+            box-shadow: 0 2px 10px rgb(0, 0, 0, 0.15);
+            z-index: 1001;
+        }
+
+        .profile-dropdown:hover .profile-details {
+            display: block;
+        }
+
+        .profile-details input,
+        .profile-details textarea {
+            width: 100%;
+            margin: 5px 0;
+            padding: 8px;
         }
     </style>
 </head>
@@ -205,14 +257,32 @@
     <nav class="navbar">
         <div class="navbar-brand"> AgroLith </div>
         <ul class="navbar-links">
-            <li><a href="{% url 'dashboard' %}"> Crop & Climate </a></li>
+            <li><a href="{% url 'dashboard' %}"> Fertilizers </a></li>
             <li><a href="#"> Manuers </a></li>
-            <li><a href="#"> Fertilizers </a></li>
+            <li><a href="#"> Crop & Climate </a></li>
             <li><a href="#"> Plants & Disease </a></li>
             <li><a href="#" class="add-cart"> Cart </a></li>
             <li><a href="{% url 'logout' %}" class="logout"> Logout </a></li>
+            <li class="profile-dropdown"><a href="#"> profile </a>
+            <div class="profile-details">
+                <p> Email: {{ request.user.email }}</p>
+                <p>Username: {{ request.user.username }}</p>
+                <p>Password: **********</p>
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="phone" placeholder="Phone Number" value="{{ profile.phone_number }}">
+                    <textarea name="address" placeholder="Address">{{ profile.address }}</textarea>
+                    <button type="submit">Save</button>
+                </form>
+            </div>
+            </li>
         </ul>
     </nav>
+
+    <div class="dashboard-banner">
+        <h1> Don't wait. Start your farming journey now! </h1>
+        <p> Fresh seeds. Expert picks. Your farm begins here. </p>
+    </div>
 
     <div class="page-content">
         <div class="cards-grid">
@@ -220,7 +290,7 @@
             <div class="veg-card">
                 <img src="{{ veg.image.url }}" alt="{{ veg.name }}" class="veg-img">
                 <h3 class="veg-name"> {{ veg.name }} </h3>
-                <p class="price"> ${{ veg.price }} </p>
+                <p class="price"> Rs {{ veg.price }} </p>
 
                 <div class="quantity-selector">
                     <button class="qty-btn"> - </button>
