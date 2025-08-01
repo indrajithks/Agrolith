@@ -1,28 +1,124 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Profile </title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #c0c1bc;
+        }
+
+        .profile-container {
+            max-width: 500px;
+            margin: 80px auto;
+            padding: 30px;
+            background: #f2bfbf;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-container h2 {
+            margin-top: 0px;
+            font-size: 40px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #34a953;
+        }
+
+        .input-group, .profile-pic {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label,
+        .profile-pic label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #333;
+        }
+
+        .input-group input,
+        .profile-pic input 
+        textarea {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .input-group input:focus,
+        textarea:focus {
+            border-color: #2e8b57;
+        }
+
+        .save-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #2e8b57;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .save-btn:hover {
+            background-color: #256f46;
+        }
+    </style>
 </head>
 <body>
+    <div class="profile-container">
     <h2> Manage your profile </h2>
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
-        <p> Username: {{ request.user.username }} </p>
-        <p> Email: {{ request.user.email }} </p>
+        <div class="profile-pic">
+            <label> Profile Picture </picture>
+            <input type="file" name="profile_pic">
+        </div>
 
-        <label> Phone Number </label>
-        <input type="text" name="phone" value="{{ profile.phone_number }}" required>
-
-        <label> Address </label>
-        <textarea name="address" required>{{ profile.address }}</textarea>
-
-        <label> Profile Picture </picture>
-        <input type="file" name="profile_picture">
+        <div class="input-group">
+            <label> Username </label>
+            <input type="text" name="username" value="{{ user.username }}">
+        </div>
         
-        <button type="submit"> Save </button>
+        <div class="input-group">
+            <label> Email </label>
+            <input type="email" name="email" value="{{ user.email }}" readonly>
+        </div>
+        
+        <div class="input-group">
+            <label> New Password </label>
+            <input type="text" name="phone" value="{{ profile.phone_number }}">
+        </div>
+
+        <div class="input-group">
+        <label> Phone Number </label>
+        <input type="text" name="phone" value="{{ profile.phone_number }}">
+        </div>
+        
+        <div class="input-group">
+        <label> Address </label>
+        <textarea name="address">{{ profile.address }}</textarea>
+        </div>
+
+        <button type="submit"> Save Changes </button>
     </form>
 </body>
 </html>

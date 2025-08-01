@@ -13,6 +13,7 @@ class Vegetable(models.Model):
     
 class UserProfile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
+    profile_pic = models.ImageField(upload_to='profile_pics/',blank=True,null=True)
     phone_number = models.CharField(max_length=15,blank=True)
     address = models.TextField(blank=True)
 
