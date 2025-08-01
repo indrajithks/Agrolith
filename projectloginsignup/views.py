@@ -66,3 +66,17 @@ def dashboard_view(request):
     else:
         return redirect('login')
 
+def profile_view(request):
+    profile, created = UserProfile.objects.get_or_create(user=request.user)
+
+    if request.method == "POST":
+        profile.phone_number = request.POST.get("phone")
+        profile.address = request.POST.get("address")
+
+        if request.FILES.get("profile_picture"):
+            profile.profile_picture = request.FILE.get("profile_picture")
+            profile.save()
+            messages.success(request, "Profile updatess successfully!")
+            return redirect('profile')
+        
+    return render(request, 'profile.html',{'profile': profile})

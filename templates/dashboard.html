@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -251,6 +252,21 @@
             margin: 5px 0;
             padding: 8px;
         }
+
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-icon:hover {
+            transform: scale(1.1);
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -263,19 +279,7 @@
             <li><a href="#"> Plants & Disease </a></li>
             <li><a href="#" class="add-cart"> Cart </a></li>
             <li><a href="{% url 'logout' %}" class="logout"> Logout </a></li>
-            <li class="profile-dropdown"><a href="#"> profile </a>
-            <div class="profile-details">
-                <p> Email: {{ request.user.email }}</p>
-                <p>Username: {{ request.user.username }}</p>
-                <p>Password: **********</p>
-                <form method="POST">
-                    {% csrf_token %}
-                    <input type="text" name="phone" placeholder="Phone Number" value="{{ profile.phone_number }}">
-                    <textarea name="address" placeholder="Address">{{ profile.address }}</textarea>
-                    <button type="submit">Save</button>
-                </form>
-            </div>
-            </li>
+            <li><a href="{% url 'profile' %}"><img src="https://via.placeholder.com/40" alt="" class="profile-icon" title="Profile"></a></li>
         </ul>
     </nav>
 

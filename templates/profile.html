@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Profile </title>
+</head>
+<body>
+    <h2> Manage your profile </h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <p> Username: {{ request.user.username }} </p>
+        <p> Email: {{ request.user.email }} </p>
+
+        <label> Phone Number </label>
+        <input type="text" name="phone" value="{{ profile.phone_number }}" required>
+
+        <label> Address </label>
+        <textarea name="address" required>{{ profile.address }}</textarea>
+
+        <label> Profile Picture </picture>
+        <input type="file" name="profile_picture">
+        
+        <button type="submit"> Save </button>
+    </form>
+</body>
+</html>
